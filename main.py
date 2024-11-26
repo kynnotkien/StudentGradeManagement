@@ -43,6 +43,8 @@ class LoadData:
     def __init__(self):
         self.df = pd.read_csv(FILE_PATH)
 
+# Table create
+
 class Table(tk.Frame):
     def __init__(self, parent, room=None):
         super().__init__(parent)
@@ -93,11 +95,14 @@ class Table(tk.Frame):
                 if label in self.room.entries:
                     self.room.entries[label].delete(0, tk.END)
                     self.room.entries[label].insert(0, value)
+            return record
 
     def update_table(self):
         # Clear existing items
         for item in self.tree.get_children():
             self.tree.delete(item)
+
+# Controler, editer, buttons place
 
 class Room(tk.Frame):
     def __init__(self, parent):
@@ -141,10 +146,12 @@ class Search(tk.Frame):
     def __init__(self, parent):
         pass
 
+# Button function
+
 class Button(tk.Frame):
-    def __init__(self, room_instance):
-        super().__init__(room_instance)
-        self.room = room_instance  # Store reference to Room instance
+    def __init__(self, parent, room=None):
+        super().__init__(parent)
+        self.room = room  # Store reference to Room instance
     
     def delete(self):
         print("Delete")
@@ -175,8 +182,8 @@ class Button(tk.Frame):
             messagebox.showerror("Error", "Computer cannot be empty")
             return
         else:
-            file_path = Path(__file__).parent / "test.csv"
-            with open(file_path, "a", newline='') as file:
+            FILE_PATH
+            with open(FILE_PATH, "a", newline='') as file:
             # Get values from all entry fields using room reference
                 values = []
                 for label in ['ID:', 'Name:', 'Maths:', 'Science:', 'English:', 'Social:', 'Computer:', 'Average:', 'Grade:']:
@@ -186,7 +193,15 @@ class Button(tk.Frame):
                 file.write(",".join(values) + "\n")
 
     def update(self):
-        print("Update")
+        pass
+        # FILE_PATH
+        # new_values = []
+        # with open(FILE_PATH, "w") as file:
+        #     for label in ['ID:', 'Name:', 'Maths:', 'Science:', 'English:', 'Social:', 'Computer:', 'Average:', 'Grade:']:
+        #         new_values.append(self.room.entries[label].get())
+        #     print(record,new_values)
+        #     file.write(",".replace(record, new_values))
+
 
 
 class Edit(tk.Frame):

@@ -43,8 +43,6 @@ class LoadData:
     def __init__(self):
         self.df = pd.read_csv(FILE_PATH)
 
-# Table create
-
 class Table(tk.Frame):
     def __init__(self, parent, room=None):
         super().__init__(parent)
@@ -95,14 +93,34 @@ class Table(tk.Frame):
                 if label in self.room.entries:
                     self.room.entries[label].delete(0, tk.END)
                     self.room.entries[label].insert(0, value)
-            return record
 
-    def update_table(self):
-        # Clear existing items
+    def update_table(self, event):
+        """Update the Treeview by clearing existing items, reloading the data from the CSV file,
+           and inserting the rows into the Treeview."""
+        
+        # Clear existing items in the Treeview
         for item in self.tree.get_children():
             self.tree.delete(item)
 
-# Controler, editer, buttons place
+        # Reload data from CSV file and update the DataFrame
+        try:
+            self.df = pd.read_csv(FILE_PATH)
+        except FileNotFoundError:
+            messagebox.showerror("Error", "The file could not be found.")
+            return
+        except pd.errors.EmptyDataError:
+            messagebox.showerror("Error", "The file is empty.")
+            return
+        except Exception as e:
+            messagebox.showerror("Error", f"An error occurred: {e}")
+            return
+
+        # Insert rows into the Treeview
+        for index, row in self.df.iterrows():
+            self.tree.insert("", "end", values=tuple(row))
+
+        print("Table updated successfully.")
+
 
 class Room(tk.Frame):
     def __init__(self, parent):
@@ -146,12 +164,11 @@ class Search(tk.Frame):
     def __init__(self, parent):
         pass
 
-# Button function
-
 class Button(tk.Frame):
-    def __init__(self, parent, room=None):
-        super().__init__(parent)
-        self.room = room  # Store reference to Room instance
+    def __init__(self, room_instance):
+        super().__init__(room_instance)
+        self.room = room_instance  # Store reference to Room instance
+        self.table = Table
     
     def delete(self):
         print("Delete")
@@ -182,8 +199,8 @@ class Button(tk.Frame):
             messagebox.showerror("Error", "Computer cannot be empty")
             return
         else:
-            FILE_PATH
-            with open(FILE_PATH, "a", newline='') as file:
+            file_path = Path(__file__).parent / "test.csv"
+            with open(file_path, "a", newline='') as file:
             # Get values from all entry fields using room reference
                 values = []
                 for label in ['ID:', 'Name:', 'Maths:', 'Science:', 'English:', 'Social:', 'Computer:', 'Average:', 'Grade:']:
@@ -191,18 +208,10 @@ class Button(tk.Frame):
                 
                 # Write values as comma-separated string
                 file.write(",".join(values) + "\n")
+            self.table.tree.insert("", "end", values=(values))
 
     def update(self):
-        pass
-        # FILE_PATH
-        # new_values = []
-        # with open(FILE_PATH, "w") as file:
-        #     for label in ['ID:', 'Name:', 'Maths:', 'Science:', 'English:', 'Social:', 'Computer:', 'Average:', 'Grade:']:
-        #         new_values.append(self.room.entries[label].get())
-        #     print(record,new_values)
-        #     file.write(",".replace(record, new_values))
-
-
+        print("Update")
 
 class Edit(tk.Frame):
     def __init__(self, parent):

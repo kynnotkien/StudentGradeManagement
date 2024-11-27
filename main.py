@@ -186,7 +186,7 @@ class Button(tk.Frame):
                 file.write(",".join(values) + "\n")
 
     def update(self):
-        print("Update")
+        print('Update')
 
 
 class Edit(tk.Frame):

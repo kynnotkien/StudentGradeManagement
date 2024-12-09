@@ -143,7 +143,7 @@ class Room(tk.Frame):
     def __init__(self, parent, table):
         super().__init__(parent)
         self.entries = {}
-        self.table = table
+        self.table = table  
         self.pack(fill=tk.X, padx=10, pady=10, side=tk.LEFT)
 
         # Configure frame
